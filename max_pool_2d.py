@@ -3,8 +3,9 @@ from layer import Layer
 
 class MaxPool2d(Layer):
 
-	def __init__(self, kernel_size, name, skip_connection=False):
+	def __init__(self, kernel_size, strides, name, skip_connection=False):
 		self.kernel_size = kernel_size
+		self.strides = strides
 		self.name = name
 		self.skip_connection = skip_connection
 		
@@ -14,7 +15,7 @@ class MaxPool2d(Layer):
 			output = tf.nn.max_pool(
 				input,
 				ksize=[1, self.kernel_size, self.kernel_size, 1],
-				strides=([1, self.kernel_size, self.kernel_size, 1]),
+				strides=self.strides,
 				padding="SAME")
 
 		output.scope = scope

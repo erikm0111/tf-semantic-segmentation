@@ -14,19 +14,19 @@ class Network():
 			layers = []
 			layers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=64, name='conv_1_1'))
 			layers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=64, name='conv_1_2'))
-			layers.append(MaxPool2d(kernel_size=2, name='max_pool_1', skip_connection=True))
+			layers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_1', skip_connection=True))
 
 			layers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=128, name='conv_2_1'))
 			layers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=128, name='conv_2_2'))
-			layers.append(MaxPool2d(kernel_size=2, name='max_pool_2', skip_connection=True))
+			layers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_2', skip_connection=True))
 
 			layers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=256, name='conv_3_1'))
 			layers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=256, name='conv_3_2'))
-			layers.append(MaxPool2d(kernel_size=2, name='max_pool_3', skip_connection=True))
+			layers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_3', skip_connection=True))
 
 			layers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=512, name='conv_4_1'))
 			layers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=512, name='conv_4_2'))
-			layers.append(MaxPool2d(kernel_size=2, name='max_pool_4', skip_connection=True))
+			layers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_4', skip_connection=True))
 
 		self.inputs = tf.placeholder(tf.float32, [None, self.IMAGE_HEIGHT, self.IMAGE_WIDTH, self.IMAGE_CHANNELS],
 			name='inputs' )
