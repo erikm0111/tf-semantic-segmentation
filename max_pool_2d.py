@@ -16,6 +16,7 @@ class MaxPool2d(Layer):
 				input,
 				ksize=[1, self.kernel_size, self.kernel_size, 1],
 				strides=self.strides,
+				#strides=[1, self.kernel_size, self.kernel_size, 1],
 				padding="SAME")
 
 		output.scope = scope

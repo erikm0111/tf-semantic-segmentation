@@ -27,7 +27,7 @@ def restore_session(checkpoint_dir):
 	return global_step
 
 
-def train():
+def train(restore_session=False):
 	BATCH_SIZE = 1
 	IMAGE_HEIGHT = 570
 	IMAGE_WIDTH = 3260
