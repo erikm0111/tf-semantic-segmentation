@@ -28,8 +28,8 @@ if __name__ == '__main__':
     encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=128, name='conv_2_2'))
     encoderLayers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_2'))
 
-    encoderLayers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=256, name='conv_3_1'))
-    encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=256, name='conv_3_2'))
+    encoderLayers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=512, name='conv_3_1'))
+    encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=512, name='conv_3_2'))
     encoderLayers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_3'))
 
     # DECODER
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     input_file = '/home/ematosevic/CompSci/projects_repo/tf-semantic-segmentation/video/t7.mp4'
     output_dir = '/home/ematosevic/CompSci/projects_repo/tf-semantic-segmentation/test_frames_output/'
-    checkpoint = 'save/C3,64,2C3,64,1M2C3,128,2C3,128,1M2C3,256,2C3,256,1M2/2017-05-13_021809/'
+    checkpoint = 'save/C3,64,2C3,64,1M2C3,128,2C3,128,1M2C3,512,2C3,512,1M2/2017-05-18_011909/'
     cap = cv2.VideoCapture(input_file)
 
     with tf.Session() as sess:

@@ -24,8 +24,8 @@ class Network():
 			encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=128, name='conv_2_2'))
 			encoderLayers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_2'))
 
-			encoderLayers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=256, name='conv_3_1'))
-			encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=256, name='conv_3_2'))
+			encoderLayers.append(Conv2d(kernel_size=3, strides=[1,2,2,1], output_channels=512, name='conv_3_1'))
+			encoderLayers.append(Conv2d(kernel_size=3, strides=[1,1,1,1], output_channels=512, name='conv_3_2'))
 			encoderLayers.append(MaxPool2d(kernel_size=2, strides=[1,2,2,1], name='max_pool_3'))
 
 		# DECODER
@@ -66,14 +66,13 @@ class Network():
 			self.description += "{}".format(layer.get_description())
 			counter += 1
 
-		counter -= 1
 		for layer in decoderLayers:
-			net = layer.create_layer(net, input_shape=input_shapes[counter].shape, prev_layer=self.layers[layer.name])
+			net = layer.create_layer(net, input_shape=input_shapes[counter-1].shape, prev_layer=self.layers[layer.name])
 			counter -= 1
 
 
-		#self.segmentation_result = tf.sigmoid(net)
-		self.segmentation_result = tf.nn.elu(net)	
+		self.segmentation_result = tf.sigmoid(net)
+		#self.segmentation_result = tf.nn.elu(net)	
 
 		self.cost = tf.sqrt(tf.reduce_mean(tf.square(self.segmentation_result - self.targets)))
 		self.train_op = tf.train.AdamOptimizer().minimize(self.cost)

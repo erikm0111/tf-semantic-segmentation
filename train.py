@@ -98,7 +98,6 @@ def train(restore_session=False):
 					print colored("Best accuracy: {} in batch {}".format(max_acc[0], max_acc[1]), 'blue')
 					print colored("Total time: {}".format(time.time() - global_start), 'blue')
 
-					# Plot example reconstructions
 					n_examples = 3
 					test_inputs, test_targets = dataset.test_inputs[:n_examples], dataset.test_targets[:n_examples]
 					test_inputs = np.multiply(test_inputs, 1.0 / 255)
@@ -107,17 +106,13 @@ def train(restore_session=False):
 												network.inputs: np.reshape(test_inputs,
 												[n_examples, network.IMAGE_HEIGHT, network.IMAGE_WIDTH, network.IMAGE_CHANNELS])})
 
-					# Prepare the plot
 					test_plot_buf = draw_results(test_inputs, test_targets, test_segmentation, test_accuracy, network,
 												batch_num, timestamp)
 
-					# Convert PNG buffer to TF image
 					image = tf.image.decode_png(test_plot_buf.getvalue(), channels=4)
 
-					# Add the batch dimension
 					image = tf.expand_dims(image, 0)
 
-					# Add image summaryWant to win a free copy of X: The Experience When Bu
 					image_summary_op = tf.summary.image("plot", image)
 
 					image_summary = sess.run(image_summary_op)
