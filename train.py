@@ -8,7 +8,8 @@ import numpy as np
 from termcolor import colored
 import matplotlib.pyplot as plt
 import io
-
+from imgaug import augmenters as iaa
+import imgaug
 
 # potrebno omoguciti:
 # self.saver
@@ -42,6 +43,20 @@ def train(restore_session=False):
 	dataset = Dataset(batch_size=BATCH_SIZE, folder="data{}_{}".format(network.IMAGE_HEIGHT, network.IMAGE_WIDTH))
 	inputs, targets = dataset.next_batch()
 
+	seq = iaa.Sequential([
+		iaa.Crop(px=(0, 16), name="Crop"),
+		iaa.Fliplr(0.5, name="Flip"),
+		iaa.GaussianBlur(sigma=(0, 3.0), name="GaussianBlur")
+	])
+
+	def activator_heatmaps(images, augmenter, parents, default):
+		if augmenter.name in ["GaussianBlur"]:
+			return False
+		else:
+			return default
+
+	hooks_heatmaps = ia.HooksImages(activator_heatmaps)
+
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		summary_writer = tf.summary.FileWriter('{}/{}-{}'.format('logs', network.description, timestamp),
@@ -65,6 +80,10 @@ def train(restore_session=False):
 					(dataset.batch_size, network.IMAGE_HEIGHT, network.IMAGE_WIDTH, network.IMAGE_CHANNELS))
 				batch_targets = np.reshape(batch_targets,
 					(dataset.batch_size, network.IMAGE_HEIGHT, network.IMAGE_WIDTH, 1))
+
+				seq_det = seq.to_deterministic()
+				batch_inputs = seq_det.augment_images(batch_inputs)
+				batch_targets = seq_det.augment_images(batch_targets, hooks=hooks_heatmaps)
 
 				batch_inputs = np.multiply(batch_inputs, 1.0 / 255)
 
